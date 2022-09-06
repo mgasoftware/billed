@@ -25,7 +25,8 @@ export default class NewBill {
     formData.append('file', file)
     formData.append('email', email)
 
-    this.store
+    if(e.target.value.includes("jpg") || e.target.value.includes("jpeg") ||  e.target.value.includes("png")) {
+      this.store
       .bills()
       .create({
         data: formData,
@@ -39,6 +40,10 @@ export default class NewBill {
         this.fileUrl = fileUrl
         this.fileName = fileName
       }).catch(error => console.error(error))
+    }
+    else {
+      alert('Choisir un format de fichier supporté (jpeg, jpg, png)');
+    }
   }
   handleSubmit = e => {
     e.preventDefault()
