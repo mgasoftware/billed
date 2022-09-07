@@ -21,6 +21,7 @@ const row = (bill) => {
 
 const rows = (data) => {
   if (data && data.length) {
+    // Sort of data date to be in the latest to the oldest 
     data.sort(function (a, b) {
       return new Date(b.date) - new Date(a.date);
     });

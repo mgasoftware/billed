@@ -20,12 +20,17 @@ export default class NewBill {
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
+
+    // Create a variable who create a file extension
+    const fileExtension = fileName.split('.').pop()
+
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)
     formData.append('email', email)
 
-    if(e.target.value.includes("jpg") || e.target.value.includes("jpeg") ||  e.target.value.includes("png")) {
+    // Add an instruction to add only extension jpg, jpeg, png
+    if(fileExtension === "jpg" || fileExtension === "jpeg" ||  fileExtension === "png") {
       this.store
       .bills()
       .create({
