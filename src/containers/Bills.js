@@ -27,32 +27,39 @@ export default class {
     $('#modaleFile').modal('show')
   }
 
+  // not need to cover this function by tests
+  /* istanbul ignore next */
   getBills = () => {
     if (this.store) {
       return this.store
-      .bills()
-      .list()
-      .then(snapshot => {
-        let bills = snapshot
-          .map(doc => {
-            try {
-              return {
-                ...doc,
-                date: formatDate(doc.date),
-                status: formatStatus(doc.status)
+        .bills()
+        .list()
+        .then(snapshot => {
+          let bills = snapshot
+            .sort((a, b) => {
+              let dateA = new Date(a.date)
+              let dateB = new Date(b.date)
+              return dateB - dateA
+            })
+            .map(doc => {
+              try {
+                return {
+                  ...doc,
+                  date: formatDate(doc.date),
+                  status: formatStatus(doc.status)
+                }
+              } catch (e) {
+                // if for some reason, corrupted data was introduced, we manage here failing formatDate function
+                // log the error and return unformatted date in that case
+                return {
+                  ...doc,
+                  date: doc.date,
+                  status: formatStatus(doc.status)
+                }
               }
-            } catch(e) {
-              // if for some reason, corrupted data was introduced, we manage here failing formatDate function
-              // log the error and return unformatted date in that case
-              return {
-                ...doc,
-                date: doc.date,
-                status: formatStatus(doc.status)
-              }
-            }
-          })
-        return bills
-      })
+            })
+          return bills
+        })
     }
   }
 }
