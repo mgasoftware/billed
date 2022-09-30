@@ -27,20 +27,13 @@ export default class {
     $('#modaleFile').modal('show')
   }
 
-  // not need to cover this function by tests
-  /* istanbul ignore next */
   getBills = () => {
     if (this.store) {
       return this.store
         .bills()
         .list()
         .then(snapshot => {
-          let bills = snapshot
-            .sort((a, b) => {
-              let dateA = new Date(a.date)
-              let dateB = new Date(b.date)
-              return dateB - dateA
-            })
+          const bills = snapshot
             .map(doc => {
               try {
                 return {

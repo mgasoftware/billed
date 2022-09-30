@@ -17,18 +17,13 @@ const row = (bill) => {
       </td>
     </tr>
     `)
-  }
+}
+
 
 const rows = (data) => {
-  if (data && data.length) {
-    // Sort of data date to be in the latest to the oldest 
-    data.sort(function (a, b) {
-      return new Date(b.date) - new Date(a.date);
-    });
-    return data.map(bill => row(bill)).join("");
-  }
-
-  return "";
+  return (data && data.length) ? data.sort((a, b) => {
+    return (new Date(a.date) < new Date(b.date)) ? 1 : -1
+  }).map(bill => row(bill)).join("") : ""
 }
 
 export default ({ data: bills, loading, error }) => {
@@ -55,7 +50,7 @@ export default ({ data: bills, loading, error }) => {
   } else if (error) {
     return ErrorPage(error)
   }
-  
+
   return (`
     <div class='layout'>
       ${VerticalLayout(120)}
